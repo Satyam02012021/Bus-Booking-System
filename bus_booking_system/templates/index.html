@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Booking System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Bus Booking System</h1>
+
+        <!-- Flash messages for status updates -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+
+        <h2>Add New Bus</h2>
+        <form action="{{ url_for('add_bus') }}" method="POST">
+            <label for="name">Bus Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="total_seats">Total Seats:</label>
+            <input type="number" id="total_seats" name="total_seats" required>
+
+            <label for="route">Route (Source to Destination):</label>
+            <input type="text" id="route" name="route" required>
+
+            <button type="submit">Add Bus</button>
+        </form>
+
+        <h2>Available Buses</h2>
+        <ul>
+            {% for bus in buses %}
+            <li>
+                <a href="{{ url_for('bus_details', bus_id=bus[0]) }}">{{ bus[1] }} ({{ bus[4] }})</a> - Seats: {{ bus[2] }} | Occupied: {{ bus[3] }}
+                <form action="{{ url_for('book_seat', bus_id=bus[0]) }}" method="POST" style="display:inline;">
+                    <input type="text" name="user_id" placeholder="User ID" required>
+                    <button type="submit">Book Seat</button>
+                </form>
+                <form action="{{ url_for('cancel_seat', bus_id=bus[0]) }}" method="POST" style="display:inline;">
+                    <input type="number" name="seat_number" placeholder="Seat Number" required>
+                    <button type="submit">Cancel Seat</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

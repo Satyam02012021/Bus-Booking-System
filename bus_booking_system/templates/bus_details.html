@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ bus[1] }} - Seat Plan</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .bus-container {
+            margin: 20px;
+            padding: 20px;
+            border: 5px solid {{ bus_color }};  /* Bus border in the predefined color */
+            border-radius: 10px;
+        }
+
+        .seat {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            margin: 5px;
+            text-align: center;
+            line-height: 40px;
+            border: 1px solid #333;
+            border-radius: 5px;
+        }
+
+        .booked {
+            background-color: pink;
+        }
+
+        .empty {
+            background-color: lightgray;
+        }
+
+        .bus-name {
+            color: {{ bus_color }};  /* Bus name in the same color as the bus */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="bus-container">
+            <h1 class="bus-name">{{ bus[1] }}</h1>
+            <h3>Route: {{ bus[4] }}</h3>
+            <div class="seat-plan">
+                {% for seat in seat_info %}
+                    <div class="seat {{ seat.color }}" title="Seat {{ seat.number }}">
+                        {{ seat.number }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <br><br>
+        <a href="{{ url_for('index') }}">Back to Home</a>
+    </div>
+
+</body>
+</html>
+
